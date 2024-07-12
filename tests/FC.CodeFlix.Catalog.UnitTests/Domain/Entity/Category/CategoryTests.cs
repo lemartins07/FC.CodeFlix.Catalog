@@ -1,4 +1,7 @@
-﻿using DomainEntity = FC.CodeFlix.Catalog.Domain.Entity;
+﻿using FC.CodeFlix.Catolog.Domain.Exceptions;
+using System;
+using System.Xml.Linq;
+using DomainEntity = FC.CodeFlix.Catalog.Domain.Entity;
 namespace FC.Catalog.UnitTests.Domain.Entities.Category;
 
 
@@ -33,7 +36,7 @@ public class CategoryTests
         Assert.True(category.IsActive);
     }
 
-    [Theory(DisplayName = nameof(Instantiate))]
+    [Theory(DisplayName = nameof(InstantiateWithIsActive))]
     [Trait("Domain", "Category - Aggregates")]
     [InlineData(true)]
     [InlineData(false)]
@@ -62,5 +65,26 @@ public class CategoryTests
         Assert.True(category.CreatedAt > datetimeBefore);
         Assert.True(category.CreatedAt < datetimeAfter);
         Assert.Equal(category.IsActive, category.IsActive);
+    }
+
+    [Theory(DisplayName = nameof(InstantiateWithIsActive))]
+    [Trait("Domain", "Category - Aggregates")]
+    [InlineData("")]
+    [InlineData(null)]    
+    [InlineData("   ")]
+    public void InstantiateErrorWhenNameIsEmpty(string? name)
+    {
+        Action action = () => new DomainEntity.Category(name!, "Category Description");
+        var exeception = Assert.Throws<EntityValidationException>(action);
+        Assert.Equal("Name should not be empty or null", exeception.Message);
+    }
+
+    [Fact(DisplayName = nameof(InstantiateErrorWhenDescriptionIsNull))]
+    [Trait("Domain", "Category - Aggregates")]
+    public void InstantiateErrorWhenDescriptionIsNull()
+    {
+        Action action = () => new DomainEntity.Category("Category Name", null!);
+        var exception = Assert.Throws<EntityValidationException>(action);
+        Assert.Equal("Description should not be null", exception.Message);
     }
 }

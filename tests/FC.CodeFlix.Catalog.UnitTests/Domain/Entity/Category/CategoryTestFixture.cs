@@ -1,10 +1,41 @@
-﻿using DomainEntity = FC.CodeFlix.Catalog.Domain.Entity;
+﻿using FC.CodeFlix.Catalog.UnitTests.Common;
+using DomainEntity = FC.CodeFlix.Catalog.Domain.Entity;
 
 namespace FC.CodeFlix.Catalog.UnitTests.Domain.Entity.Category;
 
-public class CategoryTestFixture
+public class CategoryTestFixture : BaseFixture
 {
-    public DomainEntity.Category GetValidCategory() => new DomainEntity.Category("Category Name", "Category Description");    
+    public CategoryTestFixture() : base() { }
+
+    public string GetValidCategoryName()
+    {
+        var categoryName = "";
+        
+        while (categoryName.Length < 3)
+            categoryName = Faker.Commerce.Categories(1)[0];
+        
+        if (categoryName.Length > 255)
+            categoryName = categoryName[..255];
+        
+        return categoryName;
+    }
+
+    public string GetValidCategoryDescription()
+    {
+        var categoryDescription = Faker.Commerce.ProductDescription();
+        
+        if (categoryDescription.Length > 10_000)
+            categoryDescription = categoryDescription[..10_000];
+        
+        return categoryDescription;
+    }
+
+    public DomainEntity.Category GetValidCategory(bool isActive = true) 
+        => new (
+            GetValidCategoryName(), 
+            GetValidCategoryDescription(),
+            isActive
+        );    
 }
 
 [CollectionDefinition(nameof(CategoryTestFixture))]

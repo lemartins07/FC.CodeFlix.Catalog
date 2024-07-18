@@ -59,5 +59,54 @@ namespace FC.CodeFlix.Catalog.UnitTests.Domain.Validation
 
             action.Should().NotThrow();
         }
+
+        [Theory(DisplayName = nameof(MinLengthThrowWhenLess))]
+        [Trait("Domain", "DomainValidation - Validation")]
+        [MemberData(nameof(GetValuesSmallerThanMin), parameters: 10)]
+        public void MinLengthThrowWhenLess(string target, int minLength)
+        {
+            Action action = () => DomainValidation.MinLength(target, minLength, "fieldName");
+
+            action
+                .Should()
+                .Throw<EntityValidationException>()
+                .WithMessage($"fieldName should not be less than {minLength} characters long");
+        }
+
+        public static IEnumerable<object[]> GetValuesSmallerThanMin(int numberOfTests = 5)
+        {
+            var faker = new Faker();
+
+            for (int i = 0; i < numberOfTests; i++)
+            {
+                var example = faker.Commerce.ProductName();
+                var minLength = example.Length + (new Random()).Next(1, 20);
+
+                yield return new object[] { example, minLength };
+            }
+        }
+
+        [Theory(DisplayName = nameof(MinLengthOk))]
+        [Trait("Domain", "DomainValidation - Validation")]
+        [MemberData(nameof(GetValuesGreaterThanMin), parameters: 10)]
+        public void MinLengthOk(string target, int minLength)
+        {
+            Action action = () => DomainValidation.MinLength(target, minLength, "fieldName");
+
+            action.Should().NotThrow();
+        }
+
+        public static IEnumerable<object[]> GetValuesGreaterThanMin(int numberOfTests = 5)
+        {
+            var faker = new Faker();
+
+            for (int i = 0; i < numberOfTests; i++)
+            {
+                var example = faker.Commerce.ProductName();
+                var minLength = example.Length - (new Random()).Next(1, 5);
+
+                yield return new object[] { example, minLength };
+            }
+        }
     }
 }

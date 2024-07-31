@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.onsaveconfig = .onsaveconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FC.CodeFlix.Catolog.Application", "src\FC.CodeFlix.Catolog.Application\FC.CodeFlix.Catolog.Application.csproj", "{240A215F-1A63-4C6B-B38C-78173BB7821F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{7E0F594F-8A7E-46ED-801E-9113A6631C6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E0F594F-8A7E-46ED-801E-9113A6631C6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E0F594F-8A7E-46ED-801E-9113A6631C6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{240A215F-1A63-4C6B-B38C-78173BB7821F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{240A215F-1A63-4C6B-B38C-78173BB7821F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{240A215F-1A63-4C6B-B38C-78173BB7821F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{240A215F-1A63-4C6B-B38C-78173BB7821F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +43,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{0BA03000-A6B9-46DE-A7BE-98466C7DE90C} = {EA58C63B-37E2-4472-AB69-D7D34B4205FF}
 		{7E0F594F-8A7E-46ED-801E-9113A6631C6C} = {6E9A1DAA-92F1-4BE6-922D-47AF2004A1B9}
+		{240A215F-1A63-4C6B-B38C-78173BB7821F} = {6E9A1DAA-92F1-4BE6-922D-47AF2004A1B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F84FCBA7-8A45-48F8-A4FA-E6D70AEDE2B0}

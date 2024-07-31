@@ -2,7 +2,8 @@
 using FC.CodeFlix.Catolog.Application.Interfaces;
 using FC.CodeFlix.Catolog.Domain.SeedWork;
 using Moq;
-using UseCases = FC.CodeFlix.Catalog.Application.UseCases.CreateCategory;
+using UseCases = FC.CodeFlix.Catolog.Application.UseCases.Category.CreateCategory;
+using FluentAssertions;
 
 namespace FC.CodeFlix.Catalog.UnitTests.Application.CreateCategory;
 
@@ -16,7 +17,7 @@ public class CreateCategoryTest
         var unitOfWorkMock = new Mock<IUnitOfWork>();
         var useCase = new UseCases.CreateCategory(repositoryMock.Object, unitOfWorkMock.Object);
 
-        var input = new CreateCategoryInput("Category Name", "Category Description", true);
+        var input = new UseCases.CreateCategoryInput("Category Name", "Category Description", true);
 
         var output = await useCase.Handle(input, CancellationToken.None);
 
@@ -27,11 +28,11 @@ public class CreateCategoryTest
 
         unitOfWorkMock.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
 
-        output.ShouldNotBeNull();
+        output.Should().NotBeNull();
         output.Name.Should().Be("Category Name");
         output.Description.Should().Be("Category Description");
         output.IsActive.Should().Be(true);
-        (output.Id != null && output.Id != Guid.Empty).Should().BeTrue();
-        (output.CreatedAt != null && output.CreatedAt != default(DateTime)).Should().BeTrue();
+        output.Id.Should().NotBeEmpty();
+        output.CreatedAt.Should().NotBeSameDateAs(default(DateTime));
     }
 }

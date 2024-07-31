@@ -1,7 +1,7 @@
 ﻿using FC.CodeFlix.Catalog.Domain.Entity;
+using FC.CodeFlix.Catolog.Domain.SeedWork;
 using Moq;
 using UseCases = FC.CodeFlix.Catalog.Application.UseCases.CreateCategory;
-
 
 namespace FC.CodeFlix.Catalog.UnitTests.Application.CreateCategory;
 
@@ -13,31 +13,18 @@ public class CreateCategoryTest
     {
         var repositoryMock = new Mock<ICategoryRepository>();
         var unitOfWorkMock = new Mock<IUnitOfWork>();
-        var useCase = new UseCases.CreateCategory(
-            repositoryMock.Object,
-            unitOfWorkMock.Object
-        );
+        var useCase = new UseCases.CreateCategory(repositoryMock.Object, unitOfWorkMock.Object);
 
-        var input = new CreateCategoryInput(
-            "Category Name",
-            "Category Description",
-            true
-        );
+        var input = new CreateCategoryInput("Category Name", "Category Description", true);
 
         var output = await useCase.Handle(input, CancellationToken.None);
 
         repositoryMock.Verify(
-            repository => repository.Create(
-                It.IsAny<Category>(),
-                It.IsAny<CancellationToken>()
-            ),
+            repository => repository.Insert(It.IsAny<Category>(), It.IsAny<CancellationToken>()),
             Times.Once
         );
 
-        unitOfWorkMock.Verify(
-            uow => uow.Commit(It.IsAny<CancellationToken>()),
-            Times.Once
-        );
+        unitOfWorkMock.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
 
         output.ShouldNotBeNull();
         output.Name.Should().Be("Category Name");
